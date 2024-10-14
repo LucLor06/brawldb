@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block header %}Patch {{ patch.number }}{% endblock header %}
+
+{% block content %}
+<section>
+    <form class="patch__form">
+        <p>Patch: </p>
+        <select name="patch" _="
+        on change
+            send submit to the closest parent <form/>
+        end">
+            {% for patch_number in patch_numbers %}
+            <option value="{{ patch_number }}">{{ patch_number }}</option>
+            {% endfor %}
+        </select>
+    </form>
+    <a href="{{ patch.link }}">Patch notes</a>
+    {% for combo in combos %}
+    <div class="change">
+        {% include 'mixins/combo-name.html' %}
+        {% for change in combo.current_patch_changes %}
+        <ul>
+            {% if change.type == 'outdated' %}
+            <li>Now outdated</li>
+            {% elif change.type == 'working' %}
+            <li>No longer outdated</li>
+            {% else %}
+            <li>{{ change.type_pretty }}: {{ change.from_value }} to {{ change.to_value }}</li>
+            {% endif %}
+        </ul>
+        {% endfor %}
+    </div>
+    {% empty %}
+    <p>No changes for this patch :(</p>
+    {% endfor %}
+</section>
+{% endblock content %}

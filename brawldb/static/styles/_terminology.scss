@@ -1,0 +1,15 @@
+.term {
+    margin-block: 2rem;
+    
+    * {
+        text-align: left;
+    }
+
+    h3 {
+        font-size: clamp(40px, 3.5vw, 48px)
+    }
+
+    p {
+        margin-left: 5%;
+    }
+}

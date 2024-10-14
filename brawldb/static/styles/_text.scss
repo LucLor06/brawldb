@@ -1,0 +1,81 @@
+@font-face {
+    font-family: 'Bebas Neue';
+    src: url('fonts/BebasNeue.ttf');
+}
+
+@font-face {
+    font-family: 'Dosis';
+    src: url('fonts/Dosis.ttf');
+}
+
+p, a, li, sub, button, input, select, option, label, option {
+    font-family: 'Dosis';
+    color: $color-text;
+    text-align: center;
+}
+
+h1, h2, h3, h4, h5, .modifier {
+    font-family: 'Bebas Neue';
+    color: $color-primary;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+h1 {
+    font-size: $font-size-xl;
+}
+
+h2 {
+    font-size: $font-size-xl;
+}
+
+h3 {
+    font-size: $font-size-sm;
+}
+
+h4, h5 {
+    font-size: $font-size-sm;
+}
+
+p, button, input, select, option, label, li, a {
+    font-size: $font-size-sm;
+}
+
+p, li {
+    margin-block: 1rem;
+}
+
+ul {
+    margin-left: 5%;
+    list-style-type: disc;
+}
+
+li {
+    text-align: left;
+}
+
+svg, path {
+    stroke: $color-primary-dark;
+    fill: $color-primary-dark;
+}
+
+.header {
+    font-size: $font-size-xxl;
+    color: white;
+    text-align: left;
+}
+
+.icon__help, .modifier__help {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: row wrap;
+    column-gap: 2rem;
+
+    & > div {
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+    }
+}

@@ -1,0 +1,47 @@
+.form__select {
+    margin-block: 1rem;
+
+    & > * {
+        cursor: pointer;
+        transition: transform 250ms;
+
+        img {
+            opacity: .25;
+            transition: opacity 250ms, transform 250ms;
+        }
+        
+        input {
+            display: none;
+        }
+
+        &:has(input:checked), &:hover {
+            img {
+                opacity: 1;
+            }
+        }
+
+        &:active {
+            transform: scale(0.9) translateY(1rem);
+        }
+    }
+}
+
+.weapons, .legends {
+    display: flex;
+    gap: .25rem;
+    flex-flow: row wrap;
+    justify-content: center;
+
+    & > * {
+        width: clamp(5%, 5rem, 15%);
+        aspect-ratio: 1/1;
+
+        img {
+            width: 100%;
+        }
+    }
+}
+
+.patch__form {
+    display: flex;
+}

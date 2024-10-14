@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block header %}Combos{% endblock header %}
+
+{% block content %}
+<section>
+    <div class="icon__help faded">
+        <div>
+            <img class="text-icon" src="/static/usability_white.png">
+            <p>Usability</p>
+        </div>
+        <div>
+            <img class="text-icon" src="/static/damage_white.png">
+            <p>Damage Range</p>
+        </div>
+        <div>
+            <img class="text-icon" src="/static/dexterity_white.png">
+            <p>Dexterity</p>
+        </div>
+        <div>
+            <img class="text-icon" src="/static/average_damage_white.png"> 
+            <p>Average Damage</p>
+        </div>
+    </div>
+    <div class="modifier__help faded">
+        {% for modifier in modifiers %}
+        <div>
+            {% include 'mixins/modifier.html' %}
+            <p>{{ modifier.name }}</p>
+        </div>
+        {% endfor %}
+        <a href="{% url 'terminology' %}">More help</a>
+    </div>
+    <form id="combos__form" autocomplete="off" hx-get hx-swap="outerHTML" hx-target="next .combos" hx-trigger="change">
+        <button type="button" _="
+        init
+            set element filtersOpen to false
+        end
+        on click 
+            set filtersOpen to not filtersOpen
+            if filtersOpen
+                set my innerText to 'Hide Filters'
+                add .expanded to the next .expandable
+            else
+                set my innerText to 'Show Filters'
+                remove .expanded from the next .expandable
+            end
+        end">Show Filters</button>
+        <div class="expandable">
+            <div>
+                <p>Select a weapon to show possible combos for that weapon</p>
+                <div class="weapons form__select" _="
+                behavior WeaponRadio
+                    on change
+                        if checkedWeapon is not me and checkedWeapon
+                            set checkedWeapon.checked to false
+                        end
+                        set global checkedWeapon to me
+                    end
+                end
+                init
+                    set global checkedWeapon to null
+                end">
+                    {% for weapon in weapons %}
+                    <label>
+                        <img src="{{ weapon.icon }}">
+                        <input type="checkbox" name="weapon" value="{{ weapon.id }}" autocomplete="off" _="install WeaponRadio">
+                    </label>
+                    {% endfor %}
+                </div>
+                <p>Select a legend to show possible combos for that legend. This is based on weapons and max dexterity ("Ember" would show all bow and katars combos that work with less than or equal to 7 dexterity).</p>
+                <div class="legends form__select" _="
+                behavior LegendRadio
+                    on change
+                        if checkedLegend is not me and checkedLegend
+                            set checkedLegend.checked to false
+                        end
+                        set global checkedLegend to me
+                    end
+                end
+                init
+                    set global checkedLegend to null
+                end">
+                    {% for legend in legends %}
+                    <label>
+                        <img src="{{ legend.icon }}">
+                        <input type="checkbox" name="legend" value="{{ legend.id }}" autocomplete="off" _="install LegendRadio">
+                    </label>
+                    {% endfor %}
+                </div>
+                <p>Order combos by</p>
+                <div class="combos__filters" hx-trigger="change">
+                    <label>
+                        Usability
+                        <input type="radio" name="order_by" value="-usability" checked>
+                    </label>
+                    <label>
+                        Damage
+                        <input type="radio" name="order_by" value="-average_damage">
+                    </label>
+                </div>
+                <p>Misc</p>
+                <div class="combos__filters">
+                    <label>
+                        Show Sig Combos
+                        <input name="show_sig_combos" type="checkbox" checked>
+                    </label>
+                    <label>
+                        Show Outdated Combos
+                        <input name="show_outdated_combos" type="checkbox">
+                    </label>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="form_submitted" value="yep">
+    </form>
+</section>
+{% include 'mixins/combos.html' %}
+{% endblock content %}

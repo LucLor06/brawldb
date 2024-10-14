@@ -1,0 +1,7 @@
+<div class="combo__header">
+    {% if combo.legend %}
+    <img src="{{ combo.legend.icon }}">
+    {% endif %}
+    <img src="{{ combo.weapon.icon }}">
+    <a href="{% url 'combo' combo.id %}"><h3>{% for attack in combo.attacks.all %}{{ attack.move.name }}{% if attack.modifiers.exists %}{% for modifier in attack.modifiers.all %}{% include 'mixins/modifier.html' %}{% if forloop.last %} {% endif %}{% endfor %}{% endif %}{% if not forloop.last %} > {% endif %}{% endfor %}</h3></a>
+</div>

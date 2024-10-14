@@ -1,0 +1,36 @@
+.expandable {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 1s, opacity 2s;
+
+    & > * {
+        overflow: hidden;
+    }
+}
+
+.expandable.expanded {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+body:has(.modal:not(.hidden)) {
+    overflow: hidden;
+}
+
+.text-icon {
+    display: inline;
+    width: $font-size-sm;
+}
+
+.faded {
+    opacity: 0.5;
+}

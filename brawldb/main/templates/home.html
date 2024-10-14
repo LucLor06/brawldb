@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block header %}Welcome to{% endblock header %}
+
+{% block content %}
+<section class="home">
+    <img src="/static/logo_long.png">
+    <p><b>BrawlDB</b> is a website dedicated to providing users with information about true combos in the platform fighting game Brawlhalla.</p>
+    <p><b>BrawlDB</b> is currently home to <b>{{ combo_count }}</b> combos and is updated to patch {{ patch.number }}.</p>
+    <p>Every combo that a Brawlhalla player should learn is already on the website, I may add more over time but almost all of them will range from niche to useless.</p>
+    <p><b>Note</b> if you're a user of the old website, you may be wondering where sections such as legends, weapons, and stats went. These have been deprecated, as I felt like they were not the main focus of the website, and most people didn't need them since the information is common knowledge and readily available in game. If people really want them back, I will add them, but as of right now the site's main focus is true combos and it will remain that way.</p>
+</section>
+{% endblock content %}

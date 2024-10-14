@@ -1,0 +1,70 @@
+nav {
+    z-index: 1;
+    position: fixed;
+    user-select: none;
+
+    &:has(.nav__toggle > input:checked) {
+        background-color: rgba(0, 0, 0, .9);
+        user-select: default;
+        width: clamp(320px, 20%, 600px);
+        height: 100%;
+
+        .nav__content {
+            display: block;
+        }
+    }
+}
+
+.nav__toggle {
+    display: flex;
+    cursor: pointer;
+    width: 100vw;
+    justify-content: left;
+    background-color: $color-base;
+
+    .nav__toggle-icon--close, input[type='checkbox'] {
+        display: none;
+    }
+    
+    svg, path {
+        width: $font-size-lg;
+        height: $font-size-lg;
+        fill: $color-text;
+        transition: fill 250ms;
+    }
+
+    svg:hover path {
+        fill: $color-primary-light;
+    }
+
+    &:has(input:checked) {
+        .nav__toggle-icon--open {
+            display: none;
+        }
+        .nav__toggle-icon--close {
+            display: block;
+        }
+    }
+}
+
+.nav__content {
+    display: none;
+
+    a {
+        cursor: pointer;
+        display: block;
+        font-size: clamp(56px, 5vw, 96px);
+        font-family: 'Bebas Neue';
+        text-decoration: none;
+        transition: color 250ms, transform 250ms;
+
+        &:hover {
+            color: $color-primary-light;
+            transform: scale(1.1);
+        }
+    }
+
+    img {
+        width: 90%;
+    }
+}

@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Create Combo</h1>
+<select class="hidden modifiers" id="modifiers_copy">
+    {% for modifier in modifiers %}
+    <option value="{{ modifier.id }}">{{ modifier.name }}</option>
+    {% endfor %}
+</select>
+<form method="post" enctype="multipart/form-data" _="
+init
+    set $moves to 1
+end">
+    {% csrf_token %}
+    <section attack="1">
+        <label>Move 1</label>
+        <select name="attack_1">
+            {% for move in moves %}
+            <option value="{{ move.id }}">{{ move.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="button" _="
+        on click
+            set attack to the @attack of the closest parent <section/>
+            set node to #modifiers_copy.cloneNode(true)
+            remove .hidden from node
+            remove @id from node
+            set the @name of node to 'modifier_' + attack
+            put node before me
+            node.focus()
+        end">+</button>
+        <button type="button" _="
+        on click
+            remove the previous .modifiers
+        end">-</button>
+    </section>
+    <button type="button" _="
+    on click
+        get the previous <section/>
+        set node to it.cloneNode(true)
+        increment $moves
+        set the @attack of node to $moves
+        get the first <select/> in node
+        set its @name to 'attack_' + $moves
+        remove <select.modifiers/> in node
+        set the innerText of the first <label/> in node to 'Move ' + $moves
+        put node before me
+        focus() the first <select/> in node
+    end">+</button>
+    <button type="button" _="
+    on click
+        remove the previous <section/>
+        decrement $moves
+    end">-</button>
+    <section>
+        <label>Legend</label>
+        <select name="legend">
+            <option value="" selected>None</option>
+            {% for legend in legends %}
+            <option value="{{ legend.id }}">{{ legend.name }}</option>
+            {% endfor %}
+        </select>
+    </section>
+    <section>
+        <label>Weapon</label>
+        <select name="weapon">
+            {% for weapon in weapons %}
+            <option value="{{ weapon.id }}">{{ weapon.name }}</option>
+            {% endfor %}
+        </select>
+    </section>
+    <section>
+        <label>Video</label>
+        <input type="file" name="video" required>
+    </section>
+    <section>
+        <label>Usability</label>
+        <input type="integer" name="usability" min="1" max="10" required>
+    </section>
+    <section>
+        <label>Start Damage</label>
+        <input type="integer" name="start_damage" min="0" value="0" required>
+    </section>
+    <section>
+        <label>Stop Damage</label>
+        <input type="integer" name="stop_damage" min="0">
+    </section>
+    <section>
+        <label>Dexterity</label>
+        <input type="integer" name="dexterity">
+    </section>
+    <section>
+        <label>Average Damage</label>
+        <input type="integer" name="average_damage" required>
+    </section>
+    <input type="submit">
+</form>
+{% endblock content %}
