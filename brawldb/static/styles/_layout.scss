@@ -1,0 +1,44 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    background: url('/static/background.png') fixed center;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    padding: calc(clamp(40px, 2.5vw, 48px) + 2rem) 4rem 2rem 4rem;
+    display: flex;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    align-items: center;
+
+    img {
+        margin-left: auto;
+        width: $font-size-xl;
+        height: $font-size-xl;
+    }
+}
+
+section {
+    margin: 0 auto;
+    width: clamp(320px, 60%, 100%);
+    padding-block: 2rem;
+}
+
+.filler {
+    margin: 0;
+    padding: 0;
+    flex-grow: 1;
+}
+
+
+main {
+    flex-grow: 1;
+    display: flex;
+    background-color: $color-base;
+    flex-direction: column;
+}

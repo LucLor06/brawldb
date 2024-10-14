@@ -1,0 +1,39 @@
+@keyframes slideOut {
+    from {bottom: 0%; opacity: 1;}
+    to {bottom: -100%; opacity: 0;}
+}
+
+@keyframes slideIn {
+    from {bottom: -100%; opacity: 0;}
+    to {bottom: 0%; opacity: 1;}
+}
+
+@keyframes fadeOut {
+    from {transform: translateX(0); opacity: 1;}
+    to {transform: translateX(2rem); opacity: 0;}
+}
+
+@keyframes fadeIn {
+    from {transform: translateX(-2rem); opacity: 0;}
+    to {transform: translateX(0); opacity: 1;}
+}
+
+.anim-slideOut {
+    animation: slideOut .25s cubic-bezier(0.86, 0, 0.07, 1);
+    animation-fill-mode: forwards;
+}
+
+.anim-slideIn {
+    animation: slideIn .5s cubic-bezier(0.075, 0.82, 0.165, 1);
+    animation-fill-mode: forwards;
+}
+
+.anim-fadeOut {
+    animation: fadeOut 1s;
+    animation-fill-mode: forwards;
+}
+
+.anim-fadeIn {
+    animation: fadeIn 1s;
+    animation-fill-mode: forwards;
+}

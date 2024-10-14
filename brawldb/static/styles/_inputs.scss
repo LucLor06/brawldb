@@ -1,0 +1,54 @@
+button, input[type='submit'], input[type='button'] {
+    margin: 1rem auto;
+    display: block;
+    text-align: center;
+    padding: .5rem 1rem;
+    color: $color-text;
+    background-color: $color-primary;
+    cursor: pointer;
+    border: none;
+    border-radius: .5rem;
+    transition: transform 250ms, background-color 250ms;
+
+    &:hover {
+        transform: scale(110%);
+        background-color: $color-primary-dark;
+    }
+    
+    &:active {
+        transform: scale(90%) translateY(.5rem);
+        background-color: $color-primary-dark;
+    }
+}
+
+input[type='number'] {
+    background-color: $color-base;
+    padding: .25rem;
+    margin: .25rem;
+    outline: none;
+    border-radius: .5rem;
+    border: 2px solid $color-primary;
+
+    &:invalid {
+      border-color: red;
+    }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+select {
+    background-color: $color-base;
+    padding: .25rem;
+    margin: .25rem;
+    outline: none;
+    border-radius: .5rem;
+    border: 2px solid $color-primary;
+}

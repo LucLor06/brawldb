@@ -1,0 +1,30 @@
+<div class="combo" {% if forloop.last and page.has_next %}hx-get="{% url 'combos' %}?page={{ page.next_page_number }}" hx-trigger="revealed" hx-swap="afterend" hx-select=".combo" hx-include="#combos__form"{% endif %}>
+    <video controls muted _="install HeaderAnim">
+        <source src="{{ combo.video.url }}">
+    </video>
+    <div class="combo__info">
+        {% include 'mixins/combo-name.html' %}
+        <div class="combo__data">
+            <div>
+                <img src="/static/usability.png">
+                <p style="color: {{ combo.usability_color }};"><b>{{ combo.usability }}</b></p>
+            </div>
+            <div>
+                <img src="/static/damage.png">
+                {% if combo.stop_damage %}
+                <p><b><span style="color: {{ combo.start_damage_color }};">{{ combo.start_damage }}</span> - <span style="color: {{ combo.stop_damage_color }};">{{ combo.stop_damage }}</span></b></p>
+                {% else %}
+                <p style="color: {{ combo.start_damage_color }};">{{ combo.start_damage }}+</p>
+                {% endif %}
+            </div>
+            <div>
+                <img src="/static/dexterity.png">           
+                <p><b>{{ combo.dexterity_display }}</b></p>
+            </div>
+            <div>                 
+                <img src="/static/average_damage.png">
+                <p><b>{{ combo.average_damage }}</b></p>
+            </div>
+        </div>
+    </div>
+</div>

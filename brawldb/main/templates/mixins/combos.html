@@ -1,0 +1,18 @@
+<section class="combos" _="
+behavior HeaderAnim
+    on play
+        remove .anim-slideIn from the next .combo__info
+        add .anim-slideOut to the next .combo__info
+    end
+    on pause or ended
+        wait 250ms
+        add .anim-slideIn to the next .combo__info
+        remove .anim-slideOut from the next .combo__info
+    end
+end">
+    {% for combo in combos %}
+    {% include 'mixins/combo.html' %}
+    {% empty %}
+    <h2>No combos found :(</h2>
+    {% endfor %}
+</section>

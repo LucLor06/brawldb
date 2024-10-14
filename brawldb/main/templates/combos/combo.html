@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<div class="combo--viewer__header">
+    <img src="{{ combo.weapon.icon }}">
+    <h1>{% for attack in combo.attacks.all %}{{ attack.move.name }}{% if attack.modifiers.exists %}{% for modifier in attack.modifiers.all %}{% include 'mixins/modifier.html' with large=True %}{% if forloop.last %} {% endif %}{% endfor %}{% endif %}{% if not forloop.last %} > {% endif %}{% endfor %}</h1>
+</div>
+{% endblock header %}
+
+{% block content %}
+<section class="combo--viewer">
+    <div class="combo--viewer__information">
+        <div>
+            <img src="/static/usability.png">
+            <p style="color: {{ combo.usability_color }};"><b>{{ combo.usability }}</b></p>
+        </div>
+        <div>
+            <img src="/static/damage.png">
+            {% if combo.stop_damage %}
+            <p><b><span style="color: {{ combo.start_damage_color }};">{{ combo.start_damage }}</span> - <span style="color: {{ combo.stop_damage_color }};">{{ combo.stop_damage }}</span></b></p>
+            {% else %}
+            <p style="color: {{ combo.start_damage_color }};">{{ combo.start_damage }}+</p>
+            {% endif %}
+        </div>
+        <div>
+            <img src="/static/dexterity.png">           
+            <p><b>{{ combo.dexterity_display }}</b></p>
+        </div>
+        <div>                 
+            <img src="/static/average_damage.png">
+            <p><b>{{ combo.average_damage }}</b></p>
+        </div>
+    </div>
+    <video playsinline controls>
+        <source src="{{ combo.video.url }}">
+    </video>
+    {% if patches %}
+    <h2>History</h2>
+    {% for patch in patches %}
+    <div class="change">
+        <h3>Patch {{ patch.number }}</h3>
+        {% for change in patch.combo_changes %}
+        <ul>
+            {% if change.type == 'outdated' %}
+            <li>Now outdated</li>
+            {% elif change.type == 'working' %}
+            <li>No longer outdated</li>
+            {% else %}
+            <li>{{ change.type_pretty }}: {{ change.from_value }} to {{ change.to_value }}</li>
+            {% endif %}
+        </ul>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {% endif %}
+</section>
+{% endblock content %}

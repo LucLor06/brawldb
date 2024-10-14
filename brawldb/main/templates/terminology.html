@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block header %}Terminology{% endblock header %}
+
+{% block content %}
+<section>
+    {% for move in moves %}
+    <div class="term">
+        <h3>{{ move.name }}</h3>
+        <p>{{ move.description }}</p>
+    </div>
+    {% endfor %}
+    {% for modifier in modifiers %}
+    <div class="term">
+        <h3>{{ modifier.name }}</h3>
+        <p>{{ modifier.description }}</p>
+    </div>
+    {% endfor %}
+</section>
+{% endblock content %}
