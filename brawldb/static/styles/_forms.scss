@@ -9,12 +9,12 @@
             opacity: .25;
             transition: opacity 250ms, transform 250ms;
         }
-        
+
         input {
             display: none;
         }
 
-        &:has(input:checked), &:hover {
+        &:has(input:checked) {
             img {
                 opacity: 1;
             }
@@ -26,6 +26,14 @@
     }
 }
 
+@media (hover: hover) and (pointer: fine) {
+    .form__select > label:hover {
+        img {
+          opacity: 1;
+        }
+    }
+}
+
 .weapons, .legends {
     display: flex;
     gap: .25rem;
@@ -33,7 +41,7 @@
     justify-content: center;
 
     & > * {
-        width: clamp(5%, 5rem, 15%);
+        width: clamp(5%, 5rem, 25%);
         aspect-ratio: 1/1;
 
         img {

@@ -5,7 +5,8 @@
     justify-content: center;
 
     .combo {
-        width: clamp(25rem, calc(50% - 2rem), 30rem);
+        width: clamp(20rem, calc(50% - 2rem), 30rem);
+        flex-grow: 1;
     }
 }
 
@@ -23,9 +24,7 @@
 
 .combo {
     display: block;
-    border-radius: 1rem;
     overflow: hidden;
-    border: 2px solid $color-primary;
     animation: scrollIn linear;
     animation-timeline: view();
     animation-range: entry;
@@ -33,11 +32,10 @@
     p {
         margin: 0;
     }
-    
+
     video {
         width: 100%;
         display: block;
-        border-radius: 1rem;
     }
 }
 
@@ -73,7 +71,7 @@
         overflow: hidden;
     }
 }
-    
+
 .combo__data {
     display: flex;
     justify-content: space-between;
@@ -81,7 +79,7 @@
     & > div {
         display: flex;
         align-items: center;
-        
+
         gap: .5rem;
 
         img {
