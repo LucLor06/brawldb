@@ -1,5 +1,17 @@
 {% extends 'base.html' %}
 
+{% block embeds %}
+<meta property="og:title" content="{{ combo }}"/>
+<meta property="og:description" content="Usability: {{ combo.usability }} | Damage Range: {% if combo.stop_damage %}{{ combo.start_damage }}-{{ combo.stop_damage }}{% else %}{{ combo.start_damage }}+{% endif %} | Dexterity: {{ combo.dexterity_display }} | Average Damage: {{ combo.average_damage }}"
+<meta property="og:url" content="https://BrawlDatabase.com/combos/{{ combo.pk }}/"/>
+<meta property="og:video:url" content="https://www.BrawlDatabase.com/media/{{ combo.video.name }}"/>
+<meta property="og:video:type" content=video/mp4>
+<meta property="og:type" content="video">
+<meta property="og:video:secure_url" content="https://www.BrawlDatabase.com/media/{{ combo.video.name }}">
+<meta property="og:video:height" content="720">
+<meta property="og:video:width" content="1280">
+{% endblock embeds %}
+
 {% block header %}
 <div class="combo--viewer__header">
     <img src="{{ combo.weapon.icon }}">
@@ -23,10 +35,10 @@
             {% endif %}
         </div>
         <div>
-            <img src="/static/dexterity.png">           
+            <img src="/static/dexterity.png">
             <p><b>{{ combo.dexterity_display }}</b></p>
         </div>
-        <div>                 
+        <div>
             <img src="/static/average_damage.png">
             <p><b>{{ combo.average_damage }}</b></p>
         </div>

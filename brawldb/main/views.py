@@ -28,7 +28,7 @@ def combos_add(request):
     if request.method == "POST":
         post = clean_request_body(request.POST)
         print(post['legend'])
-        cleaned_attacks = [{'move' : post[f'attack_{key.split('_')[-1]}'], 'modifiers' : post.getlist(f'modifier_{key.split('_')[-1]}')} for key in post if 'attack_' in key]
+        cleaned_attacks = [{'move' : post[f'attack_{key.split("_")[-1]}'], 'modifiers' : post.getlist(f'modifier_{key.split("_")[-1]}')} for key in post if 'attack_' in key]
         attacks = []
         for order, data in enumerate(cleaned_attacks, start=1):
             move = Move.objects.get(id=data['move'])
@@ -61,7 +61,7 @@ def combos(request):
             combos = combos.filter(legend__isnull=True)
         if 'legend' in request.GET:
             legend = Legend.objects.get(id=request.GET['legend'])
-            combos = combos.filter(Q(legend=legend) | Q(legend__isnull=True)).filter(weapon__in=[weapon.id for weapon in legend.weapons.all()]).filter(Q(dexterity__lte=legend.dexterity + 1) | Q(dexterity__isnull=True))      
+            combos = combos.filter(Q(legend=legend) | Q(legend__isnull=True)).filter(weapon__in=[weapon.id for weapon in legend.weapons.all()]).filter(Q(dexterity__lte=legend.dexterity + 1) | Q(dexterity__isnull=True))
         if 'weapon' in request.GET:
             combos = combos.filter(weapon=request.GET['weapon'])
         if 'order_by' in request.GET:

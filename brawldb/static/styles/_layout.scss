@@ -4,13 +4,14 @@ html {
 
 body {
     height: 100%;
-    background: url('/static/background.png') fixed center;
+    background: url('/static/background.png') no-repeat center center fixed;
+    background-size: cover;
     display: flex;
     flex-direction: column;
 }
 
 header {
-    padding: calc(clamp(40px, 2.5vw, 48px) + 2rem) 4rem 2rem 4rem;
+    padding: calc(clamp(40px, 2.5vw, 48px) + 2rem) 5vw 2rem 5vw;
     display: flex;
     white-space: nowrap;
     text-overflow: ellipsis;

@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ct_z%ogwx8c)wf+0i)d8ix&e@^pwr7(4d@8z3frog1l!z=9+h7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.brawldatabase.com']
 
 AUTH_USER_MODEL = 'main.User'
 
@@ -122,11 +122,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATIC_ROOT = 'static/'
+STATIC_ROOT = BASE_DIR / 'static/'
 
 MEDIA_URL = 'media/'
 
-MEDIA_ROOT = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
 
 STATICFILES_FINDERS = [
     'compressor.finders.CompressorFinder'

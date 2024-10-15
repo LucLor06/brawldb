@@ -1,5 +1,5 @@
 <div class="combo" {% if forloop.last and page.has_next %}hx-get="{% url 'combos' %}?page={{ page.next_page_number }}" hx-trigger="revealed" hx-swap="afterend" hx-select=".combo" hx-include="#combos__form"{% endif %}>
-    <video controls muted _="install HeaderAnim">
+    <video controls playsinline _="install HeaderAnim">
         <source src="{{ combo.video.url }}">
     </video>
     <div class="combo__info">
@@ -18,10 +18,10 @@
                 {% endif %}
             </div>
             <div>
-                <img src="/static/dexterity.png">           
+                <img src="/static/dexterity.png">
                 <p><b>{{ combo.dexterity_display }}</b></p>
             </div>
-            <div>                 
+            <div>
                 <img src="/static/average_damage.png">
                 <p><b>{{ combo.average_damage }}</b></p>
             </div>

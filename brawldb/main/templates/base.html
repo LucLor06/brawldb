@@ -5,10 +5,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    {% block embeds %}
+    <meta property="og:title" content="Brawl Database"/>
+    <meta property="og:description" content="Brawl Database is a resource for Brawlhalla players to view true combos"/>
+    <meta property="og:image" content="{% static 'logo.png' %}"/>
+    {% endblock embeds %}
     <title>{% block title %}{% endblock title %}</title>
     {% compress css %}
     <link type="text/x-scss" rel="stylesheet" href="{% static 'styles/styles.scss' %}">
     {% endcompress %}
+    <link rel="icon" type="image/x-icon" href="/static/icon.ico">
     <script src="https://unpkg.com/hyperscript.org@0.9.12"></script>
     <script src="https://unpkg.com/htmx.org@1.9.12" integrity="sha384-ujb1lZYygJmzgSwoxRggbCHcjc0rB2XoQrxeTUQyRjrOnlCoYta87iKBWq3EsdM2" crossorigin="anonymous"></script>
 </head>
@@ -22,7 +29,7 @@
         <label class="nav__toggle">
             <svg class="nav__toggle-icon--open" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
             <svg class="nav__toggle-icon--close" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
-            <input id="nav__toggle--input" type="checkbox">
+            <input id="nav__toggle--input" type="checkbox" autocomplete="off">
         </label>
         <div class="nav__content" id="nav__content">
             <a hx-get="{% url 'home' %}"><img src="/static/logo_long.png"></a>

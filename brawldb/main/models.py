@@ -6,36 +6,36 @@ from django.db.models import Count, F, Max
 
 class User(AbstractUser):
     ...
-    
+
 class BaseModel(models.Model):
     name = models.CharField(max_length=32)
-    
+
     class Meta:
         abstract = True
-        
+
     def __str__(self):
         return self.name
-        
+
 class Legend(BaseModel):
     weapons = models.ManyToManyField('Weapon', blank=True, related_name='legends')
     dexterity = models.IntegerField(default=5)
 
     def icon(self):
-        return f'/static/legends/{self.name.upper().replace(' ','')}_Icon.png'
-    
+        return f'/static/legends/{self.name.upper().replace(" ","")}_Icon.png'
+
 class Weapon(BaseModel):
-    
+
     def icon(self):
-        return f'/static/weapons/{self.name.lower().replace(' ', '_')}_icon.png'
-    
+        return f'/static/weapons/{self.name.lower().replace(" ", "_")}_icon.png'
+
 class Attack(models.Model):
     move = models.ForeignKey('Move', related_name='attacks', on_delete=models.CASCADE)
     modifiers = models.ManyToManyField('Modifier', blank=True, related_name='attacks')
     order = models.PositiveIntegerField(default=1)
-    
+
     def __str__(self):
         return f'{self.move} ({self.order})'
-    
+
 class Move(BaseModel):
     is_movement = models.BooleanField(default=False)
     is_signature = models.BooleanField(default=False)
@@ -44,7 +44,7 @@ class Move(BaseModel):
 class Modifier(BaseModel):
     abbr = models.CharField(max_length=4)
     description = models.TextField()
-    
+
 def upload_to_combo(instance, filename):
     combo_id = 1
     ext = filename.split('.')[-1]
@@ -83,7 +83,7 @@ DAMAGE_COLORS = {
             '250' : '#8c0000'
         }
 
-class Combo(models.Model):  
+class Combo(models.Model):
     outdated = models.BooleanField(default=False)
     dependencies = models.ManyToManyField('Combo', blank=True, related_name='dependents')
     legend = models.ForeignKey('Legend', blank=True, null=True, related_name='combos', on_delete=models.SET_NULL)
@@ -98,7 +98,7 @@ class Combo(models.Model):
 
     class Meta:
         ordering = ['-usability']
-    
+
     def __str__(self):
         name = ''
         for attack in self.attacks.prefetch_related('modifiers'):
@@ -108,11 +108,11 @@ class Combo(models.Model):
                 modifiers += f'({modifier.abbr}) '
             modifiers = modifiers.rstrip()
             name += f'{base} {modifiers} > '
-        name = f'{self.weapon.name} | {name.rstrip(' > ')}'
+        name = f'{self.weapon.name} | {name.rstrip(" > ")}'
         if self.legend:
             name = f'{self.legend} ' + name
         return name
-    
+
     def dexterity_display(self):
         if not self.dexterity:
             return 'Any'
@@ -122,7 +122,7 @@ class Combo(models.Model):
         if not self.stop_damage:
             return f'{self.start_damage}+'
         return f'{self.start_damage}-{self.stop_damage}'
-    
+
     def usability_color(self):
         colors = {
             "1": "#FF0000",
@@ -137,13 +137,13 @@ class Combo(models.Model):
             "10": "#33FF00"
         }
         return colors[str(self.usability)]
-    
+
     def start_damage_color(self):
         return DAMAGE_COLORS[str(self.start_damage)]
 
     def stop_damage_color(self):
         return DAMAGE_COLORS[str(self.stop_damage)]
-    
+
     def get_dependencies(self):
         attacks = self.attacks.all()
         dependencies = []
@@ -171,7 +171,7 @@ class Combo(models.Model):
             if len(combos) > 0:
                 dependencies += list(combos)
         return dependencies
-    
+
     def get_dependents(self):
         attacks = self.attacks.all()
         print(attacks)
@@ -182,7 +182,7 @@ class Combo(models.Model):
         print(non_movement_attacks)
         if non_movement_attacks > 2:
             return
-        
+
         dependents = []
         combos = Combo.objects.filter(weapon=self.weapon)
         if self.legend and self.attacks.filter(move__is_signature=True).exists():
@@ -205,7 +205,7 @@ class Combo(models.Model):
             if combo_valid:
                 dependents.append(combo)
         return dependents
-    
+
     def check_dependencies(self):
         print(self)
         dexterity = self.dependencies.aggregate(Max('dexterity'))['dexterity__max']
@@ -214,7 +214,7 @@ class Combo(models.Model):
         self.dexterity = dexterity
         self.outdated = outdated
         self.save()
-    
+
     def save(self, *args, **kwargs):
         has_changed = False
         if self.id:
