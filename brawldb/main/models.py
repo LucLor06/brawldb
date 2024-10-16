@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, F, Max
+from django.urls import reverse
 
 class User(AbstractUser):
     ...
@@ -112,6 +113,9 @@ class Combo(models.Model):
         if self.legend:
             name = f'{self.legend} ' + name
         return name
+
+    def get_absolute_url(self):
+        return reverse('combo', kwargs={'pk': self.id})
 
     def dexterity_display(self):
         if not self.dexterity:
