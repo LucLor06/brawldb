@@ -15,7 +15,7 @@
 {% block header %}
 <div class="combo--viewer__header">
     <img src="{{ combo.weapon.icon }}">
-    <h1>{% for attack in combo.attacks.all %}{{ attack.move.name }}{% if attack.modifiers.exists %}{% for modifier in attack.modifiers.all %}{% include 'mixins/modifier.html' with large=True %}{% if forloop.last %} {% endif %}{% endfor %}{% endif %}{% if not forloop.last %} > {% endif %}{% endfor %}</h1>
+    <h1>{{ combo.html_title|safe }}</h1>
 </div>
 {% endblock header %}
 

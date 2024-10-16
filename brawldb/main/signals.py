@@ -1,4 +1,4 @@
-from django.db.models.signals import m2m_changed
+from django.db.models.signals import m2m_changed, post_save
 from django.dispatch import receiver
 from .models import Combo
 
@@ -14,3 +14,5 @@ def combo_attacks_changed(sender, instance, action, **kwargs):
                 dependent.check_dependencies()
         dependencies = instance.get_dependencies()
         instance.dependencies.set(dependencies)
+        instance.set_titles()
+        instance.save(skip_logging=True)

@@ -4,23 +4,31 @@
 
 {% block content %}
 <section>
-    <form class="patch__form">
+    <form class="patch__form" hx-get hx-select="main" hx-target="main" hx-swap="outerHTML" hx-trigger="change">
         <p>Patch: </p>
-        <select name="patch" _="
-        on change
-            send submit to the closest parent <form/>
-        end">
+        <select name="patch">
             {% for patch_number in patch_numbers %}
-            <option value="{{ patch_number }}">{{ patch_number }}</option>
+            <option value="{{ patch_number }}" {% if patch_number == patch.number %}selected{% endif %}>{{ patch_number }}</option>
             {% endfor %}
         </select>
     </form>
     <a href="{{ patch.link }}">Patch notes</a>
+    {% if not general_changes and not combos %}
+    <p>No changes for this patch :(</p>
+    {% else %}
+    <div class="change">
+        <h3>General changes</h3>
+        <ul>
+            {% for change in general_changes %}
+            <li>{{ change.notes }}</li>
+            {% endfor %}
+        </ul>
+    </div>
     {% for combo in combos %}
     <div class="change">
         {% include 'mixins/combo-name.html' %}
-        {% for change in combo.current_patch_changes %}
         <ul>
+            {% for change in combo.current_patch_changes %}
             {% if change.type == 'outdated' %}
             <li>Now outdated</li>
             {% elif change.type == 'working' %}
@@ -28,11 +36,10 @@
             {% else %}
             <li>{{ change.type_pretty }}: {{ change.from_value }} to {{ change.to_value }}</li>
             {% endif %}
+            {% endfor %}
         </ul>
-        {% endfor %}
     </div>
-    {% empty %}
-    <p>No changes for this patch :(</p>
     {% endfor %}
+    {% endif %}
 </section>
 {% endblock content %}

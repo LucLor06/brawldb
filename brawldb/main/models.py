@@ -4,6 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Count, F, Max
 from django.urls import reverse
+from django.template.loader import render_to_string
 
 class User(AbstractUser):
     ...
@@ -85,6 +86,8 @@ DAMAGE_COLORS = {
         }
 
 class Combo(models.Model):
+    title = models.CharField(blank=True, null=True, max_length=128, editable=False)
+    html_title = models.TextField(blank=True, null=True, editable=False)
     outdated = models.BooleanField(default=False)
     dependencies = models.ManyToManyField('Combo', blank=True, related_name='dependents')
     legend = models.ForeignKey('Legend', blank=True, null=True, related_name='combos', on_delete=models.SET_NULL)
@@ -101,21 +104,25 @@ class Combo(models.Model):
         ordering = ['-usability']
 
     def __str__(self):
-        name = ''
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('combo', kwargs={'pk': self.id})
+    
+    def set_titles(self):
+        title = ''
         for attack in self.attacks.prefetch_related('modifiers'):
             base = attack.move.name
             modifiers = ''
             for modifier in attack.modifiers.all():
                 modifiers += f'({modifier.abbr}) '
             modifiers = modifiers.rstrip()
-            name += f'{base} {modifiers} > '
-        name = f'{self.weapon.name} | {name.rstrip(" > ")}'
+            title += f'{base} {modifiers} > '
+        title = f'{self.weapon.name} | {title.rstrip(" > ")}'
         if self.legend:
-            name = f'{self.legend} ' + name
-        return name
-
-    def get_absolute_url(self):
-        return reverse('combo', kwargs={'pk': self.id})
+            title = f'{self.legend} ' + title
+        self.title = title
+        self.html_title = render_to_string('mixins/combo-title.html', {'combo': self})
 
     def dexterity_display(self):
         if not self.dexterity:
@@ -211,7 +218,6 @@ class Combo(models.Model):
         return dependents
 
     def check_dependencies(self):
-        print(self)
         dexterity = self.dependencies.aggregate(Max('dexterity'))['dexterity__max']
         outdated = self.dependencies.filter(outdated=True).exists()
         print(dexterity, outdated)
@@ -221,13 +227,15 @@ class Combo(models.Model):
 
     def save(self, *args, **kwargs):
         has_changed = False
-        if self.id:
+        skip_logging = kwargs.pop('skip_logging', False)
+        if self.id and not skip_logging:
             previous_save = Combo.objects.get(id=self.id)
-            fields = [field for field in self._meta.get_fields() if not ((field.auto_created and field.is_relation) or isinstance(field, (models.ForeignKey, models.ManyToManyField)))]
+            fields = [field for field in self._meta.get_fields() if not ((field.auto_created and field.is_relation) or isinstance(field, (models.ForeignKey, models.ManyToManyField)) or (field.editable == False))]
             patch = Patch.objects.latest('id')
             for field in fields:
                 previous_value = getattr(previous_save, field.name)
                 current_value = getattr(self, field.name)
+                print(f'{field.name}: Previous {previous_value} Current {current_value}')
                 if previous_value != current_value:
                     has_changed = True
                     change = Change(patch=patch, combo=self, type=field.name)
@@ -253,8 +261,8 @@ class Patch(models.Model):
 
 class Change(models.Model):
     patch = models.ForeignKey('Patch', related_name='changes', on_delete=models.CASCADE)
-    combo = models.ForeignKey('Combo', related_name='changes', on_delete=models.CASCADE)
-    type = models.CharField(max_length=64)
+    combo = models.ForeignKey('Combo', blank=True, null=True, related_name='changes', on_delete=models.CASCADE)
+    type = models.CharField(max_length=64, blank=True, null=True)
     from_value = models.IntegerField(blank=True, null=True)
     to_value = models.IntegerField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
@@ -263,6 +271,8 @@ class Change(models.Model):
         return self.type.replace('_', ' ').title()
 
     def __str__(self):
+        if not self.combo:
+            return f'{self.patch.number} | {self.notes}'
         base = f'{self.patch.number} | {self.combo.__str__()} | {self.type}'
         if self.type not in ['working', 'outdated']:
             base += f' | {self.from_value} to {self.to_value}'
