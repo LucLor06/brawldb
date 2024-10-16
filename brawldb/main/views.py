@@ -76,7 +76,7 @@ def patches(request):
     patch = Patch.objects.latest('id')
     if 'patch' in request.GET:
         patch = Patch.objects.get(number=request.GET['patch'])
-    context = {'patch_numbers': Patch.objects.values_list('number', flat=True), 'patch': patch, 'combos': Combo.objects.prefetch_related(Prefetch('changes', queryset=Change.objects.filter(patch=patch), to_attr='current_patch_changes')).filter(changes__patch=patch).distinct()}
+    context = {'patch_numbers': Patch.objects.values_list('number', flat=True), 'patch': patch, 'general_changes': Change.objects.filter(combo=None, patch=patch), 'combos': Combo.objects.prefetch_related(Prefetch('changes', queryset=Change.objects.filter(patch=patch), to_attr='current_patch_changes')).filter(changes__patch=patch).distinct()}
     return render(request, 'patches.html', context)
 
 def combo(request, pk):

@@ -1,0 +1,1 @@
+{% for attack in combo.attacks.all %}{{ attack.move.name }}{% if attack.modifiers.exists %}{% for modifier in attack.modifiers.all %}{% include 'mixins/modifier.html' %}{% if forloop.last %} {% endif %}{% endfor %}{% endif %}{% if not forloop.last %} > {% endif %}{% endfor %}
